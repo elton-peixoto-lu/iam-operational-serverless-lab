@@ -1,6 +1,6 @@
-# iam-operational-serverless-lab
+ora# iam-operational-serverless-lab
 
-## Visao do aluno
+## Visao do mentorado
 
 Voce assumiu uma operacao serverless em AWS.
 
