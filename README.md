@@ -1,4 +1,4 @@
-ora# iam-operational-serverless-lab
+# iam-operational-serverless-lab
 
 ## Visao do mentorado
 
