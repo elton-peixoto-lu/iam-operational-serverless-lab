@@ -1,0 +1,51 @@
+{
+  "source": {
+    "name": "AWS Architecture Icons",
+    "page": "https://aws.amazon.com/architecture/icons/",
+    "package": "https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/architecture/approved/architecture-icons/Icon-package_04302026.4705b90f5aa45b019271a2699e9ce9b97b941ee1.zip"
+  },
+  "icons": [
+    {
+      "service": "Amazon API Gateway",
+      "official_asset_name": "Res_Amazon-API-Gateway_Endpoint_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Networking-Content-Delivery/Res_Amazon-API-Gateway_Endpoint_48.png",
+      "local_asset_path": "assets/aws-icons/api-gateway-endpoint.png"
+    },
+    {
+      "service": "AWS Lambda",
+      "official_asset_name": "Res_AWS-Lambda_Lambda-Function_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Compute/Res_AWS-Lambda_Lambda-Function_48.png",
+      "local_asset_path": "assets/aws-icons/lambda-function.png"
+    },
+    {
+      "service": "Amazon DynamoDB",
+      "official_asset_name": "Res_Amazon-DynamoDB_Table_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Databases/Res_Amazon-DynamoDB_Table_48.png",
+      "local_asset_path": "assets/aws-icons/dynamodb-table.png"
+    },
+    {
+      "service": "Amazon S3",
+      "official_asset_name": "Res_Amazon-Simple-Storage-Service_S3-Standard_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Storage/Res_Amazon-Simple-Storage-Service_S3-Standard_48.png",
+      "local_asset_path": "assets/aws-icons/s3-standard.png"
+    },
+    {
+      "service": "Amazon SQS",
+      "official_asset_name": "Res_Amazon-Simple-Queue-Service_Queue_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Application-Integration/Res_Amazon-Simple-Queue-Service_Queue_48.png",
+      "local_asset_path": "assets/aws-icons/sqs-queue.png"
+    },
+    {
+      "service": "AWS Identity and Access Management",
+      "official_asset_name": "Res_AWS-Identity-Access-Management_Role_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Security-Identity/Res_AWS-Identity-Access-Management_Role_48.png",
+      "local_asset_path": "assets/aws-icons/iam-role.png"
+    },
+    {
+      "service": "Amazon CloudWatch Logs",
+      "official_asset_name": "Res_Amazon-CloudWatch_Logs_48.png",
+      "official_asset_path": "/tmp/aws-icons/Resource-Icons_04302026/Res_Management-Governance/Res_Amazon-CloudWatch_Logs_48.png",
+      "local_asset_path": "assets/aws-icons/cloudwatch-logs.png"
+    }
+  ]
+}

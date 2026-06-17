@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iam-operational-serverless-lab</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Arquitetura AWS</p>
+          <h1 id="title">iam-operational-serverless-lab</h1>
+          <p id="subtitle" class="subtitle"></p>
+        </div>
+        <div class="hero-card">
+          <p class="card-label">Modo atual</p>
+          <p id="role-mode" class="mode-chip">loading</p>
+          <p class="card-hint">Gerado automaticamente a partir do Terraform e do manifesto de ícones oficiais.</p>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="diagram-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Fluxo da arquitetura</h2>
+              <p>Canvas de arquitetura com agrupamentos, conectores e ícones oficiais embutidos.</p>
+            </div>
+            <button id="refresh-button" class="ghost-button" type="button">Recarregar dados</button>
+          </div>
+
+          <div id="architecture-canvas" class="architecture-canvas">
+            <svg id="connector-layer" class="connector-layer"></svg>
+            <div id="group-layer" class="group-layer"></div>
+            <div id="node-layer" class="node-layer"></div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <section class="panel-card">
+            <h2>Deployment atual</h2>
+            <dl id="deployment-info" class="kv-list"></dl>
+          </section>
+
+          <section class="panel-card">
+            <h2>Controles do lab</h2>
+            <ul id="notes-list" class="notes-list"></ul>
+          </section>
+
+          <section class="panel-card">
+            <h2>Ícones oficiais usados</h2>
+            <div id="icons-list" class="icons-list"></div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <template id="service-card-template">
+      <article class="service-card">
+        <img class="service-icon" alt="" />
+        <div class="service-content">
+          <h4 class="service-title"></h4>
+          <p class="service-subtitle"></p>
+          <ul class="service-details"></ul>
+        </div>
+      </article>
+    </template>
+
+    <template id="group-template">
+      <section class="aws-group">
+        <div class="aws-group-title"></div>
+      </section>
+    </template>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,166 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+MANIFEST_PATH = REPO_ROOT / "diagrams" / "official-icons-manifest.json"
+SVG_PATH = REPO_ROOT / "diagrams" / "generated" / "iam-operational-serverless-lab-official-icons.generated.svg"
+PNG_PATH = REPO_ROOT / "diagrams" / "generated" / "iam-operational-serverless-lab-official-icons.generated.png"
+MD_PATH = REPO_ROOT / "diagrams" / "generated" / "official-icons-used.generated.md"
+
+
+def rel_asset(path: str) -> str:
+    return os.path.relpath(REPO_ROOT / path, SVG_PATH.parent).replace("\\", "/")
+
+
+def build_svg(manifest: dict) -> str:
+    asset = {entry["service"]: rel_asset(entry["local_asset_path"]) for entry in manifest["icons"]}
+    return f"""<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#425466"/>
+    </marker>
+    <style>
+      .title {{ font: 700 28px Arial, sans-serif; fill: #16191f; }}
+      .subtitle {{ font: 400 15px Arial, sans-serif; fill: #5f6b7a; }}
+      .section {{ font: 700 18px Arial, sans-serif; fill: #16191f; }}
+      .label {{ font: 700 15px Arial, sans-serif; fill: #16191f; }}
+      .small {{ font: 400 13px Arial, sans-serif; fill: #425466; }}
+      .tiny {{ font: 400 12px Arial, sans-serif; fill: #5f6b7a; }}
+      .box {{ fill: #ffffff; stroke: #d5dbe3; stroke-width: 2; rx: 18; }}
+      .group {{ fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; rx: 24; }}
+      .group-strong {{ fill: #f2f7ff; stroke: #8cb3ff; stroke-width: 2; rx: 24; }}
+      .arrow {{ stroke: #425466; stroke-width: 3; fill: none; marker-end: url(#arrow); }}
+      .dashed {{ stroke-dasharray: 8 8; }}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="980" fill="#eef2f6"/>
+  <text x="70" y="70" class="title">iam-operational-serverless-lab</text>
+  <text x="70" y="100" class="subtitle">Desenho gerado a partir de manifesto com ícones oficiais da AWS</text>
+
+  <rect x="60" y="140" width="1480" height="780" class="group-strong"/>
+  <text x="90" y="180" class="section">Conta AWS / Ambiente do Lab</text>
+  <text x="90" y="205" class="tiny">Modo inicial: shared-lambda-role | Modo final: roles específicas por Lambda</text>
+
+  <rect x="100" y="250" width="420" height="520" class="group"/>
+  <text x="130" y="290" class="section">Fluxo 1: Entrada via API</text>
+  <rect x="150" y="330" width="320" height="110" class="box"/>
+  <image href="{asset['Amazon API Gateway']}" x="175" y="360" width="48" height="48"/>
+  <text x="240" y="382" class="label">Amazon API Gateway</text>
+  <text x="240" y="406" class="small">Endpoint HTTP</text>
+  <rect x="150" y="490" width="320" height="110" class="box"/>
+  <image href="{asset['AWS Lambda']}" x="175" y="520" width="48" height="48"/>
+  <text x="240" y="542" class="label">receiver-lambda</text>
+  <text x="240" y="566" class="small">Recebe payload e grava status inicial</text>
+  <rect x="150" y="650" width="320" height="110" class="box"/>
+  <image href="{asset['Amazon DynamoDB']}" x="175" y="680" width="48" height="48"/>
+  <text x="240" y="702" class="label">DynamoDB</text>
+  <text x="240" y="726" class="small">Table: DocumentProcessing</text>
+  <line x1="310" y1="440" x2="310" y2="490" class="arrow"/>
+  <line x1="310" y1="600" x2="310" y2="650" class="arrow"/>
+
+  <rect x="570" y="250" width="580" height="520" class="group"/>
+  <text x="600" y="290" class="section">Fluxo 2: Entrada via S3 e processamento assíncrono</text>
+  <rect x="620" y="330" width="220" height="110" class="box"/>
+  <image href="{asset['Amazon S3']}" x="645" y="360" width="48" height="48"/>
+  <text x="710" y="382" class="label">Amazon S3</text>
+  <text x="710" y="406" class="small">document-input-bucket</text>
+  <rect x="900" y="330" width="220" height="110" class="box"/>
+  <image href="{asset['AWS Lambda']}" x="925" y="360" width="48" height="48"/>
+  <text x="990" y="382" class="label">processor-lambda</text>
+  <text x="990" y="406" class="small">Lê S3, atualiza status e envia SQS</text>
+  <rect x="620" y="500" width="220" height="110" class="box"/>
+  <image href="{asset['Amazon DynamoDB']}" x="645" y="530" width="48" height="48"/>
+  <text x="710" y="552" class="label">DynamoDB</text>
+  <text x="710" y="576" class="small">Status do documento</text>
+  <rect x="900" y="500" width="220" height="110" class="box"/>
+  <image href="{asset['Amazon SQS']}" x="925" y="530" width="48" height="48"/>
+  <text x="990" y="552" class="label">Amazon SQS</text>
+  <text x="990" y="576" class="small">document-processing-queue</text>
+  <rect x="900" y="650" width="220" height="110" class="box"/>
+  <image href="{asset['AWS Lambda']}" x="925" y="680" width="48" height="48"/>
+  <text x="990" y="702" class="label">worker-lambda</text>
+  <text x="990" y="726" class="small">Consome a fila e conclui o fluxo</text>
+  <line x1="840" y1="385" x2="900" y2="385" class="arrow"/>
+  <line x1="1010" y1="440" x2="1010" y2="500" class="arrow"/>
+  <line x1="1010" y1="610" x2="1010" y2="650" class="arrow"/>
+  <line x1="900" y1="705" x2="840" y2="705" class="arrow"/>
+  <line x1="730" y1="610" x2="730" y2="705" class="arrow"/>
+
+  <rect x="1200" y="250" width="290" height="520" class="group"/>
+  <text x="1230" y="290" class="section">Camadas operacionais</text>
+  <rect x="1245" y="340" width="200" height="110" class="box"/>
+  <image href="{asset['AWS Identity and Access Management']}" x="1270" y="370" width="48" height="48"/>
+  <text x="1335" y="392" class="label">IAM Role</text>
+  <text x="1335" y="416" class="small">shared-role ou roles específicas</text>
+  <rect x="1245" y="510" width="200" height="110" class="box"/>
+  <image href="{asset['Amazon CloudWatch Logs']}" x="1270" y="540" width="48" height="48"/>
+  <text x="1335" y="562" class="label">CloudWatch Logs</text>
+  <text x="1335" y="586" class="small">Observabilidade das 3 funções</text>
+  <line x1="1245" y1="395" x2="1120" y2="395" class="arrow dashed"/>
+  <line x1="1245" y1="565" x2="1120" y2="565" class="arrow dashed"/>
+  <line x1="1245" y1="565" x2="470" y2="565" class="arrow dashed"/>
+
+  <text x="110" y="835" class="section">Automação</text>
+  <text x="110" y="865" class="small">Este arquivo foi gerado por script a partir do manifesto de ícones oficiais.</text>
+  <text x="110" y="890" class="small">Manifesto: diagrams/official-icons-manifest.json</text>
+  <text x="110" y="935" class="tiny">Fonte oficial: AWS Architecture Icons</text>
+</svg>
+"""
+
+
+def build_markdown(manifest: dict) -> str:
+    lines = [
+        "# Icones oficiais usados no diagrama",
+        "",
+        "As libs/serviços principais representados no desenho hoje são estes, com base no manifesto oficial de ícones AWS:",
+        "",
+    ]
+    for entry in manifest["icons"]:
+        lines.append(f"- {entry['service']}")
+        lines.append(f"  - asset oficial: `{entry['official_asset_name']}`")
+        lines.append(f"  - asset local: `{entry['local_asset_path']}`")
+    lines.extend(
+        [
+            "",
+            "Fonte oficial:",
+            f"- página: {manifest['source']['page']}",
+            f"- pacote: {manifest['source']['package']}",
+            "",
+            "Saídas geradas automaticamente:",
+            "- `diagrams/generated/iam-operational-serverless-lab-official-icons.generated.svg`",
+            "- `diagrams/generated/iam-operational-serverless-lab-official-icons.generated.png`",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def main() -> None:
+    manifest = json.loads(MANIFEST_PATH.read_text())
+    SVG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SVG_PATH.write_text(build_svg(manifest))
+    MD_PATH.write_text(build_markdown(manifest))
+    subprocess.run(
+        [
+            "rsvg-convert",
+            str(SVG_PATH),
+            "-w",
+            "3200",
+            "-h",
+            "1960",
+            "-o",
+            str(PNG_PATH),
+        ],
+        check=True,
+    )
+    print(f"generated: {SVG_PATH}")
+    print(f"generated: {PNG_PATH}")
+    print(f"generated: {MD_PATH}")
+
+
+if __name__ == "__main__":
+    main()
